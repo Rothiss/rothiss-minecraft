@@ -61,4 +61,5 @@ yarn-error.log
 # Configuration files #
 #############################
 /data
+/backups
 .env
