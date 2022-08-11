@@ -216,10 +216,10 @@ services:
 
 volumes:
     prometheus-tsdb:
-        name: ${SERVER_NAME:-rothiss}_mc_prometheus
+        #name: ${SERVER_NAME:-rothiss}_mc_prometheus
     grafana-lib:
-        name: ${SERVER_NAME:-rothiss}_mc_grafana
+        #name: ${SERVER_NAME:-rothiss}_mc_grafana
 
 networks:
     default:
-        name: ${SERVER_NAME:-rothiss}_mc_network
+        #name: ${SERVER_NAME:-rothiss}_mc_network
