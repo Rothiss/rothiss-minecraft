@@ -28,5 +28,7 @@ nbproject/
 #############################
 /backups
 /data
+/datapacks
+/mods
 /plugins
 .env
