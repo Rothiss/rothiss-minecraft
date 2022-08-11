@@ -1,0 +1,225 @@
+version: "3"
+
+services:
+    minecraft:
+        image: itzg/minecraft-server
+        container_name: ${SERVER_NAME:-rothiss}_mc
+        hostname: ${SERVER_NAME:-rothiss}_mc
+        ports:
+            - "${SERVER_PORT:-25565}:25565"
+            - "${RCON_PORT:-25575}:25575"
+            - "8123:8123"
+        volumes:
+            - ${DATA_LOCATION:-./data}:/data
+            - ${SETTINGS_LOCATION:-./settings}:/settings
+            - ${PLUGINS_LOCATION:-./plugins}:/plugins
+            - ${MODS_LOCATION:-./mods}:/mods
+            - ${DATAPACKS_LOCATION:-./datapacks}:/datapacks
+        environment:
+            EULA: "true"
+
+            SKIP_SUDO: ${SKIP_SUDO:-false}
+
+            VERSION: ${SERVER_VERSION:-1.19.2}
+            TYPE: ${SERVER_TYPE:-PAPER}
+            MEMORY: ${SERVER_MEMORY:-2G}
+            TZ: ${SERVER_TIMEZONE:-Europe/Amsterdam}
+
+            ENABLE_RCON: ${RCON_ENABLED:-true}
+            RCON_PASSWORD: ${RCON_PASSWORD:-password}
+            RCON_PORT: ${RCON_PORT:-25575}
+
+            OVERRIDE_ICON: ${ICON_OVERWRITE:-false}
+            ICON: ${ICON_LOCATION:-}
+
+            WHITELIST_FILE: ${WHITELIST_LOCATION:-/settings/whitelist.json}
+            OPS_FILE: ${OPS_LOCATION:-/settings/ops.json}
+
+            REMOVE_OLD_MODS: "true"
+            REMOVE_OLD_MODS_DEPTH: 1
+            REMOVE_OLD_MODS_INCLUDE: "*.jar"
+
+            DATAPACKS: "/datapacks"
+            REMOVE_OLD_DATAPACKS: "true"
+            REMOVE_OLD_DATAPACKS_DEPTH: 1
+            REMOVE_OLD_DATAPACKS_INCLUDE: "*.zip"
+
+            # https://github.com/itzg/docker-minecraft-server#server-configuration
+            OVERRIDE_SERVER_PROPERTIES: ${OVERRIDE_SERVER_PROPERTIES:-true}
+
+            ALLOW_FLIGHT: ${SERVER_PROPERTIES_ALLOW_FLIGHT:-false}
+            ALLOW_NETHER: ${SERVER_PROPERTIES_ALLOW_NETHER:-true}
+
+            ANNOUNCE_PLAYER_ACHIEVEMENTS: ${SERVER_PROPERTIES_ANNOUNCE_PLAYER_ACHIEVEMENTS:-true}
+
+            BROADCAST_CONSOLE_TO_OPS: ${SERVER_PROPERTIES_BROADCAST_CONSOLE_TO_OPS:-true}
+            BROADCAST_RCON_TO_OPS: ${SERVER_PROPERTIES_BROADCAST_RCON_TO_OPS:-true}
+
+            DIFFICULTY: ${SERVER_PROPERTIES_DIFFICULTY:-easy}
+
+            ENABLE_COMMAND_BLOCK: ${SERVER_PROPERTIES_ENABLE_COMMAND_BLOCK:-false}
+            ENABLE_JMX: ${SERVER_PROPERTIES_ENABLE_JMX_MONITORING:-false}
+            ENABLE_QUERY: ${SERVER_PROPERTIES_ENABLE_QUERY:-false}
+            ENABLE_STATUS: ${SERVER_PROPERTIES_ENABLE_STATUS:-true}
+            ENABLE_WHITELIST: ${SERVER_PROPERTIES_WHITELIST:-true}
+
+            ENFORCE_SECURE_PROFILE: ${SERVER_PROPERTIES_ENFORCE_SECURE_PROFILE:-false}
+            ENFORCE_WHITELIST: ${SERVER_PROPERTIES_ENFORCE_WHITELIST:-true}
+
+            ENTITY_BROADCAST_RANGE_PERCENTAGE: ${SERVER_PROPERTIES_ENTITY_BROADCAST_RANGE_PERCENTAGE:-100}
+
+            FORCE_GAMEMODE: ${SERVER_PROPERTIES_FORCE_GAMEMODE:-false}
+
+            FUNCTION_PERMISSION_LEVEL: ${SERVER_PROPERTIES_FUNCTION_PERMISSION_LEVEL:-2}
+
+            MODE: ${SERVER_PROPERTIES_GAMEMODE:-survival}
+
+            GENERATE_STRUCTURES: ${SERVER_PROPERTIES_GENERATE_STRUCTURES:-true}
+            GENERATOR_SETTINGS: ${SERVER_PROPERTIES_GENERATOR_SETTINGS:-{}}
+
+            HARDCORE: ${SERVER_PROPERTIES_HARDCORE:-false}
+
+            LEVEL: ${SERVER_PROPERTIES_LEVEL_NAME:-world}
+            SEED: ${SERVER_PROPERTIES_LEVEL_SEED:-}
+            LEVEL_TYPE: ${SERVER_PROPERTIES_LEVEL_TYPE:-default}
+
+            MAX_BUILD_HEIGHT: ${SERVER_PROPERTIES_MAX_BUILD_HEIGHT:-319}
+            MAX_PLAYERS: ${SERVER_PROPERTIES_MAX_PLAYERS:-5}
+            MAX_TICK_TIME: ${SERVER_PROPERTIES_MAX_TICK_TIME:-60000}
+            MAX_WORLD_SIZE: ${SERVER_PROPERTIES_MAX_WORLD_SIZE:-29999984}
+
+            MOTD: ${SERVER_PROPERTIES_MOTD:-Minecraft Server powered by Docker}
+
+            NETWORK_COMPRESSION_THRESHOLD: ${SERVER_PROPERTIES_NETWORK_COMPRESSION_THRESHOLD:-256}
+
+            ONLINE_MODE: ${SERVER_PROPERTIES_ONLINE_MODE:-true}
+
+            OP_PERMISSION_LEVEL: ${SERVER_PROPERTIES_OP_PERMISSION_LEVEL:-4}
+
+            PLAYER_IDLE_TIMEOUT: ${SERVER_PROPERTIES_PLAYER_IDLE_TIMEOUT:-0}
+
+            PREVENT_PROXY_CONNECTIONS: ${SERVER_PROPERTIES_PREVENT_PROXY_CONNECTIONS:-false}
+
+            PREVIEWS_CHAT: ${SERVER_PROPERTIES_PREVIEWS_CHAT:-false}
+
+            PVP: ${SERVER_PROPERTIES_PVP:-true}
+
+            QUERY_PORT: ${SERVER_PROPERTIES_QUERY_PORT:-25565}
+
+            RESOURCE_PACK_ENFORCE: ${SERVER_PROPERTIES_REQUIRE_RESOURCE_PACK:-false}
+
+            RESOURCE_PACK: ${SERVER_PROPERTIES_RESOURCE_PACK:-}
+            RESOURCE_PACK_SHA1: ${SERVER_PROPERTIES_RESOURCE_PACK_SHA1:-}
+
+            SERVER_IP: ${SERVER_PROPERTIES_SERVER_IP:-}
+            SERVER_NAME: ${SERVER_PROPERTIES_SERVER_NAME:-}
+            SERVER_PORT: ${SERVER_PROPERTIES_SERVER_PORT:-25565}
+
+            SIMULATION_DISTANCE: ${SERVER_PROPERTIES_SIMULATION_DISTANCE:-10}
+
+            SNOOPER_ENABLED: ${SERVER_PROPERTIES_SNOOPER_ENABLED:-true}
+
+            SPAWN_ANIMALS: ${SERVER_PROPERTIES_SPAWN_ANIMALS:-true}
+            SPAWN_MONSTERS: ${SERVER_PROPERTIES_SPAWN_MONSTERS:-true}
+            SPAWN_NPCS: ${SERVER_PROPERTIES_SPAWN_NPCS:-true}
+            SPAWN_PROTECTION: ${SERVER_PROPERTIES_SPAWN_PROTECTION:-16}
+
+            SYNC_CHUNK_WRITES: ${SERVER_PROPERTIES_SYNC_CHUNK_WRITES:-true}
+
+            USE_NATIVE_TRANSPORT: ${SERVER_PROPERTIES_USE_NATIVE_TRANSPORT:-true}
+
+            VIEW_DISTANCE: ${SERVER_PROPERTIES_VIEW_DISTANCE:-10}
+        tty: true
+        stdin_open: true
+        restart: unless-stopped
+
+    backup:
+        image: itzg/mc-backup
+        container_name: ${SERVER_NAME:-rothiss}_backup
+        environment:
+            INITIAL_DELAY: ${BACKUP_DELAY:-3m}
+
+            BACKUP_NAME: "${SERVER_NAME:-rothiss}_mc"
+            BACKUP_INTERVAL: ${BACKUP_INTERVAL:-2h}
+
+            RCON_HOST: "${SERVER_NAME:-rothiss}_mc"
+            RCON_PORT: ${RCON_PORT:-25575}
+            RCON_PASSWORD: ${RCON_PASSWORD:-password}
+        volumes:
+            - ${DATA_LOCATION:-./data}:/data:ro
+            - ${BACKUP_LOCATION:-./backups}:/backups
+        network_mode: "service:minecraft"
+        depends_on:
+            - minecraft
+
+    monitor:
+        image: itzg/mc-monitor
+        container_name: ${SERVER_NAME:-rothiss}_monitor
+        command: export-for-prometheus
+        environment:
+            EXPORT_SERVERS: "minecraft"
+            DEBUG: "true"
+        restart: unless-stopped
+        depends_on:
+            - minecraft
+
+    cadvisor:
+        image: gcr.io/cadvisor/cadvisor
+        container_name: ${SERVER_NAME:-rothiss}_cadvisor
+        ports:
+            - "8180:8080"
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:rw
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+        restart: unless-stopped
+        depends_on:
+            - monitor
+
+    prometheus:
+        image: prom/prometheus
+        container_name: ${SERVER_NAME:-rothiss}_prometheus
+        volumes:
+            - ./settings/prometheus.yml:/etc/prometheus/prometheus.yml
+            - prometheus-tsdb:/prometheus
+        restart: unless-stopped
+        depends_on:
+            - cadvisor
+
+    grafana:
+        image: grafana/grafana-oss
+        container_name: ${SERVER_NAME:-rothiss}_grafana
+        ports:
+            - "3000:3000"
+        volumes:
+            - grafana-lib:/var/lib/grafana
+            - ./settings/grafana/provisioning:/etc/grafana/provisioning
+            - ./settings/grafana/dashboards:/etc/grafana/dashboards
+        restart: unless-stopped
+        depends_on:
+            - prometheus
+
+    map:
+        image: nginx:latest
+        container_name: ${SERVER_NAME:-rothiss}_map
+        volumes:
+            - ./settings:/settings
+        ports:
+            - "${MAP_PORT:-80}:80"
+        environment:
+            SERVER_NAME: ${SERVER_NAME:-rothiss}
+        command: ./settings/scripts/run_nginx.sh
+        restart: unless-stopped
+        depends_on:
+            - minecraft
+
+volumes:
+    prometheus-tsdb:
+        name: ${SERVER_NAME:-rothiss}_mc_prometheus
+    grafana-lib:
+        name: ${SERVER_NAME:-rothiss}_mc_grafana
+
+networks:
+    default:
+        name: ${SERVER_NAME:-rothiss}_mc_network
