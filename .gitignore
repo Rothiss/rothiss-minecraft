@@ -31,4 +31,7 @@ nbproject/
 /datapacks
 /mods
 /plugins
+/settings/ops.json
+/settings/whitelist.json
+/settings/icon.png
 .env
