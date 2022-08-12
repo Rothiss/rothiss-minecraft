@@ -27,7 +27,7 @@ services:
 
             ENABLE_RCON: ${RCON_ENABLED:-true}
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
-            RCON_PORT: ${RCON_PORT:-25575}
+            RCON_PORT: 25575
 
             OVERRIDE_ICON: ${ICON_OVERWRITE:-false}
             ICON: ${ICON_LOCATION:-}
@@ -81,7 +81,7 @@ services:
 
             LEVEL: ${SERVER_PROPERTIES_LEVEL_NAME:-world}
             SEED: ${SERVER_PROPERTIES_LEVEL_SEED:-}
-            LEVEL_TYPE: ${SERVER_PROPERTIES_LEVEL_TYPE:-default}
+            LEVEL_TYPE: ${SERVER_PROPERTIES_LEVEL_TYPE:-minecraft:normal}
 
             MAX_BUILD_HEIGHT: ${SERVER_PROPERTIES_MAX_BUILD_HEIGHT:-319}
             MAX_PLAYERS: ${SERVER_PROPERTIES_MAX_PLAYERS:-5}
@@ -104,16 +104,16 @@ services:
 
             PVP: ${SERVER_PROPERTIES_PVP:-true}
 
-            QUERY_PORT: ${SERVER_PROPERTIES_QUERY_PORT:-25565}
+            QUERY_PORT: 25565
 
             RESOURCE_PACK_ENFORCE: ${SERVER_PROPERTIES_REQUIRE_RESOURCE_PACK:-false}
 
             RESOURCE_PACK: ${SERVER_PROPERTIES_RESOURCE_PACK:-}
             RESOURCE_PACK_SHA1: ${SERVER_PROPERTIES_RESOURCE_PACK_SHA1:-}
 
-            SERVER_IP: ${SERVER_PROPERTIES_SERVER_IP:-}
-            SERVER_NAME: ${SERVER_PROPERTIES_SERVER_NAME:-}
-            SERVER_PORT: ${SERVER_PROPERTIES_SERVER_PORT:-25565}
+            SERVER_IP:
+            SERVER_NAME: ${SERVER_PROPERTIES_SERVER_NAME:-Minecraft Server powered by Docker}
+            SERVER_PORT: 25565
 
             SIMULATION_DISTANCE: ${SERVER_PROPERTIES_SIMULATION_DISTANCE:-10}
 
@@ -143,7 +143,7 @@ services:
             BACKUP_INTERVAL: ${BACKUP_INTERVAL:-2h}
 
             RCON_HOST: "${SERVER_NAME:-rothiss}_mc"
-            RCON_PORT: ${RCON_PORT:-25575}
+            RCON_PORT: 25575
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
         volumes:
             - ${DATA_LOCATION:-./data}:/data:ro
