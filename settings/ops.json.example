@@ -1,0 +1,8 @@
+[
+  {
+    "uuid": "UUID",
+    "name": "NAME",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  },
+]
