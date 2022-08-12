@@ -159,6 +159,8 @@ services:
         environment:
             EXPORT_SERVERS: "minecraft"
             DEBUG: "true"
+        profiles:
+            - enable_monitor
         restart: unless-stopped
         depends_on:
             - minecraft
@@ -173,6 +175,8 @@ services:
             - /var/run:/var/run:rw
             - /sys:/sys:ro
             - /var/lib/docker/:/var/lib/docker:ro
+        profiles:
+            - enable_monitor
         restart: unless-stopped
         depends_on:
             - monitor
@@ -183,6 +187,8 @@ services:
         volumes:
             - ./settings/prometheus.yml:/etc/prometheus/prometheus.yml
             - prometheus:/prometheus
+        profiles:
+            - enable_monitor
         restart: unless-stopped
         depends_on:
             - cadvisor
@@ -196,6 +202,8 @@ services:
             - grafana:/var/lib/grafana
             - ./settings/grafana/provisioning:/etc/grafana/provisioning
             - ./settings/grafana/dashboards:/etc/grafana/dashboards
+        profiles:
+            - enable_monitor
         restart: unless-stopped
         depends_on:
             - prometheus
@@ -210,6 +218,8 @@ services:
         environment:
             SERVER_NAME: ${SERVER_NAME:-rothiss}
         command: ./settings/scripts/run_nginx.sh
+        profiles:
+            - enable_map
         restart: unless-stopped
         depends_on:
             - minecraft
