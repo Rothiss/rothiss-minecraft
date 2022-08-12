@@ -32,8 +32,8 @@ services:
             OVERRIDE_ICON: ${ICON_OVERWRITE:-false}
             ICON: ${ICON_LOCATION:-}
 
-            WHITELIST_FILE: ${WHITELIST_LOCATION:-/settings/whitelist.json}
-            OPS_FILE: ${OPS_LOCATION:-/settings/ops.json}
+            WHITELIST_FILE: ${WHITELIST_LOCATION:-}
+            OPS_FILE: ${OPS_LOCATION:-}
 
             REMOVE_OLD_MODS: "true"
             REMOVE_OLD_MODS_DEPTH: 1
@@ -182,18 +182,18 @@ services:
         container_name: ${SERVER_NAME:-rothiss}_prometheus
         volumes:
             - ./settings/prometheus.yml:/etc/prometheus/prometheus.yml
-            - prometheus-tsdb:/prometheus
+            - prometheus:/prometheus
         restart: unless-stopped
         depends_on:
             - cadvisor
 
     grafana:
-        image: grafana/grafana-oss
+        image: grafana/grafana-oss:8.3.3
         container_name: ${SERVER_NAME:-rothiss}_grafana
         ports:
             - "3000:3000"
         volumes:
-            - grafana-lib:/var/lib/grafana
+            - grafana:/var/lib/grafana
             - ./settings/grafana/provisioning:/etc/grafana/provisioning
             - ./settings/grafana/dashboards:/etc/grafana/dashboards
         restart: unless-stopped
@@ -215,11 +215,8 @@ services:
             - minecraft
 
 volumes:
-    prometheus-tsdb:
-        #name: ${SERVER_NAME:-rothiss}_mc_prometheus
-    grafana-lib:
-        #name: ${SERVER_NAME:-rothiss}_mc_grafana
+    prometheus:
+    grafana:
 
 networks:
     default:
-        #name: ${SERVER_NAME:-rothiss}_mc_network
