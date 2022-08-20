@@ -142,6 +142,8 @@ services:
             BACKUP_NAME: "${SERVER_NAME:-rothiss}_mc"
             BACKUP_INTERVAL: ${BACKUP_INTERVAL:-2h}
 
+            EXCLUDES: ${BACKUP_EXCLUDE:-*.jar,cache,logs}
+
             RCON_HOST: "${SERVER_NAME:-rothiss}_mc"
             RCON_PORT: 25575
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
