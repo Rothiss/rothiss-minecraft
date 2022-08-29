@@ -39,7 +39,8 @@ services:
             REMOVE_OLD_MODS_DEPTH: 1
             REMOVE_OLD_MODS_INCLUDE: "*.jar"
 
-            DATAPACKS: "/datapacks"
+            DATAPACKS: ${DATAPACK_FILES:-}
+
             REMOVE_OLD_DATAPACKS: "true"
             REMOVE_OLD_DATAPACKS_DEPTH: 1
             REMOVE_OLD_DATAPACKS_INCLUDE: "*.zip"
