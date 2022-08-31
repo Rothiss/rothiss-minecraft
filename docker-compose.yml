@@ -3,15 +3,17 @@ version: "3"
 services:
     minecraft:
         image: itzg/minecraft-server
-        container_name: ${SERVER_NAME:-rothiss}_mc
-        hostname: ${SERVER_NAME:-rothiss}_mc
+        container_name: ${SERVER_NAME:-rothiss_minecraft}
+        hostname: ${SERVER_NAME:-rothiss_minecraft}
+        networks:
+            - minecraft
         ports:
             - "${SERVER_PORT:-25565}:25565"
             - "${RCON_PORT:-25575}:25575"
             - "${MAP_DOCKER_PORT:-8123}:8123"
         volumes:
             - ${DATA_LOCATION:-./data}:/data
-            - ${SETTINGS_LOCATION:-./settings}:/settings
+            - ${SETTINGS_LOCATION:-./settings/minecraft}:/settings
             - ${PLUGINS_LOCATION:-./plugins}:/plugins
             - ${MODS_LOCATION:-./mods}:/mods
             - ${DATAPACKS_LOCATION:-./datapacks}:/datapacks
@@ -137,15 +139,16 @@ services:
     backup:
         image: itzg/mc-backup
         container_name: ${SERVER_NAME:-rothiss}_backup
+#        hostname: ${SERVER_NAME:-rothiss}_backup
         environment:
             INITIAL_DELAY: ${BACKUP_DELAY:-3m}
 
-            BACKUP_NAME: "${SERVER_NAME:-rothiss}_mc"
+            BACKUP_NAME: "${SERVER_NAME:-rothiss_minecraft}"
             BACKUP_INTERVAL: ${BACKUP_INTERVAL:-2h}
 
             EXCLUDES: ${BACKUP_EXCLUDE:-*.jar,cache,logs}
 
-            RCON_HOST: "${SERVER_NAME:-rothiss}_mc"
+            RCON_HOST: "${SERVER_NAME:-rothiss_minecraft}"
             RCON_PORT: 25575
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
         volumes:
@@ -158,64 +161,24 @@ services:
     monitor:
         image: itzg/mc-monitor
         container_name: ${SERVER_NAME:-rothiss}_monitor
-        command: export-for-prometheus
+        hostname: ${SERVER_NAME:-rothiss}_backup
+        networks:
+            - minecraft
+        command: gather-for-telegraf
         environment:
-            EXPORT_SERVERS: "minecraft"
-            DEBUG: "true"
-        profiles:
-            - enable_monitor
-        restart: unless-stopped
+            GATHER_INTERVAL: 5s
+            GATHER_TELEGRAF_ADDRESS: telegraf:8094
+            GATHER_SERVERS: minecraft:25569
         depends_on:
             - minecraft
-
-    cadvisor:
-        image: gcr.io/cadvisor/cadvisor
-        container_name: ${SERVER_NAME:-rothiss}_cadvisor
-        ports:
-            - "8180:8080"
-        volumes:
-            - /:/rootfs:ro
-            - /var/run:/var/run:rw
-            - /sys:/sys:ro
-            - /var/lib/docker/:/var/lib/docker:ro
-        profiles:
-            - enable_monitor
-        restart: unless-stopped
-        depends_on:
-            - monitor
-
-    prometheus:
-        image: prom/prometheus
-        container_name: ${SERVER_NAME:-rothiss}_prometheus
-        volumes:
-            - ./settings/prometheus.yml:/etc/prometheus/prometheus.yml
-            - prometheus:/prometheus
-        profiles:
-            - enable_monitor
-        restart: unless-stopped
-        depends_on:
-            - cadvisor
-
-    grafana:
-        image: grafana/grafana-oss:8.3.3
-        container_name: ${SERVER_NAME:-rothiss}_grafana
-        ports:
-            - "3000:3000"
-        volumes:
-            - grafana:/var/lib/grafana
-            - ./settings/grafana/provisioning:/etc/grafana/provisioning
-            - ./settings/grafana/dashboards:/etc/grafana/dashboards
-        profiles:
-            - enable_monitor
-        restart: unless-stopped
-        depends_on:
-            - prometheus
 
     map:
         image: nginx:latest
         container_name: ${SERVER_NAME:-rothiss}_map
+        networks:
+            - minecraft
         volumes:
-            - ./settings:/settings
+            - ./settings/nginx:/settings
         ports:
             - "${MAP_WEBSERVER_PORT:-80}:80"
         environment:
@@ -227,9 +190,6 @@ services:
         depends_on:
             - minecraft
 
-volumes:
-    prometheus:
-    grafana:
-
 networks:
-    default:
+    minecraft:
+        name: ${NETWORK_NAME:-rothiss_minecraft}

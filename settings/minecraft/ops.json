@@ -1,0 +1,14 @@
+[
+  {
+    "uuid": "f53ec694-de6d-4bc0-8327-ffbbaef8b95d",
+    "name": "Rothiss",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  },
+  {
+    "uuid": "df934f35-62d6-436d-a266-6bedfbcc9c19",
+    "name": "RothissCam",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]
