@@ -137,7 +137,7 @@ services:
 
     backup:
         image: itzg/mc-backup
-        container_name: ${SERVER_NAME:-rothiss}_backup
+        container_name: ${SERVER_NAME:-rothiss_minecraft}_backup
         environment:
             INITIAL_DELAY: ${BACKUP_DELAY:-3m}
 
@@ -158,8 +158,8 @@ services:
 
     monitor:
         image: itzg/mc-monitor
-        container_name: ${SERVER_NAME:-rothiss}_monitor
-        hostname: ${SERVER_NAME:-rothiss}_backup
+        container_name: ${SERVER_NAME:-rothiss_minecraft}_monitor
+        hostname: ${SERVER_NAME:-rothiss_minecraft}_backup
         networks:
             - minecraft
         command: gather-for-telegraf
@@ -174,8 +174,8 @@ services:
 
     telegraf:
         image: telegraf
-        container_name: ${SERVER_NAME:-rothiss}_telegraf
-        hostname: ${SERVER_NAME:-rothiss}_telegraf
+        container_name: ${SERVER_NAME:-rothiss_minecraft}_telegraf
+        hostname: ${SERVER_NAME:-rothiss_minecraft}_telegraf
         networks:
             - minecraft
         ports:
@@ -203,7 +203,7 @@ services:
 
     map:
         image: nginx:latest
-        container_name: ${SERVER_NAME:-rothiss}_map
+        container_name: ${SERVER_NAME:-rothiss_minecraft}_map
         networks:
             - minecraft
         volumes:
@@ -211,7 +211,7 @@ services:
         ports:
             - "${DYNMAP_WEBSERVER_PORT:-80}:80"
         environment:
-            SERVER_NAME: ${SERVER_NAME:-rothiss}
+            SERVER_NAME: ${SERVER_NAME:-rothiss_minecraft}
         command: ./settings/scripts/run_nginx.sh
         profiles:
             - enable_map
