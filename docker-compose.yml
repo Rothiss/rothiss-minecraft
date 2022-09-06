@@ -165,7 +165,7 @@ services:
         command: gather-for-telegraf
         environment:
             GATHER_INTERVAL: 5s
-            GATHER_TELEGRAF_ADDRESS: telegraf:8094
+            GATHER_TELEGRAF_ADDRESS: telegraf:${TELEGRAF_PORT:-8094}
             GATHER_SERVERS: minecraft
         profiles:
             - enable_monitor
@@ -178,8 +178,8 @@ services:
         hostname: ${SERVER_NAME:-rothiss_minecraft}_telegraf
         networks:
             - minecraft
-        ports:
-            - "8094:8094"
+#        ports:
+#            - "${TELEGRAF_PORT:-8094}:8094"
         volumes:
             - ./settings/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
             - /var/run/docker.sock:/var/run/docker.sock
