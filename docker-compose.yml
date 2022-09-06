@@ -15,6 +15,7 @@ services:
             - ${SETTINGS_LOCATION:-./settings/minecraft}:/settings
             - ${PLUGINS_LOCATION:-./plugins}:/plugins
             - ${MODS_LOCATION:-./mods}:/mods
+            - ${MODPACKS_LOCATION:-./modpacks}:/modpacks
             - ${DATAPACKS_LOCATION:-./datapacks}:/datapacks
         environment:
             EULA: "true"
