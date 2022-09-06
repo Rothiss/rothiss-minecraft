@@ -154,6 +154,7 @@ services:
             - ${DATA_LOCATION:-./data}:/data:ro
             - ${BACKUP_LOCATION:-./backups}:/backups
         network_mode: "service:minecraft"
+        restart: unless-stopped
         depends_on:
             - minecraft
 
@@ -170,6 +171,7 @@ services:
             GATHER_SERVERS: minecraft
         profiles:
             - enable_monitor
+        restart: unless-stopped
         depends_on:
             - minecraft
 
@@ -197,6 +199,7 @@ services:
             HOST_MOUNT_PREFIX: /hostfs
         profiles:
             - enable_monitor
+        restart: unless-stopped
         depends_on:
             - monitor
 
