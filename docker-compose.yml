@@ -37,7 +37,7 @@ services:
             WHITELIST_FILE: ${WHITELIST_LOCATION:-}
             OPS_FILE: ${OPS_LOCATION:-}
 
-            REMOVE_OLD_MODS: ${REMOVE_OLD_MODS:-"true"}
+            REMOVE_OLD_MODS: ${MODPACK_REMOVE_OLD_MODS:-"true"}
             REMOVE_OLD_MODS_DEPTH: 1
             REMOVE_OLD_MODS_INCLUDE: "*.jar"
 
