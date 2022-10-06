@@ -47,6 +47,9 @@ services:
             REMOVE_OLD_DATAPACKS_DEPTH: 1
             REMOVE_OLD_DATAPACKS_INCLUDE: "*.zip"
 
+            CF_SERVER_MOD: ${MODPACK:-}
+            CF_BASE_DIR: ${MODPACK_BASE_DIR:-/data}
+
             # https://github.com/itzg/docker-minecraft-server#server-configuration
             OVERRIDE_SERVER_PROPERTIES: ${OVERRIDE_SERVER_PROPERTIES:-true}
 
