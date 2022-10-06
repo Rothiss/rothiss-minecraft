@@ -2,7 +2,7 @@ version: "3"
 
 services:
     minecraft:
-        image: itzg/minecraft-server
+        image: itzg/minecraft-server${JAVA_VERSION:-}
         container_name: ${SERVER_NAME:-rothiss_minecraft}
         hostname: ${SERVER_NAME:-rothiss_minecraft}
         networks:
