@@ -150,6 +150,8 @@ services:
 
             EXCLUDES: ${BACKUP_EXCLUDE:-*.jar,cache,logs}
 
+            PRUNE_BACKUPS_DAYS: ${BACKUP_PRUNE:-7}
+
             RCON_HOST: "${SERVER_NAME:-rothiss_minecraft}"
             RCON_PORT: 25575
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
