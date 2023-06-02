@@ -4,7 +4,6 @@ services:
     minecraft:
         image: itzg/minecraft-server${JAVA_VERSION:-}
         container_name: ${SERVER_NAME:-rothiss_minecraft}
-        # hostname: ${SERVER_NAME:-rothiss_minecraft}
         networks:
             - minecraft
         ports:
@@ -147,7 +146,6 @@ services:
     backup:
         image: itzg/mc-backup
         container_name: ${SERVER_NAME:-rothiss_minecraft}_backup
-        # hostname: ${SERVER_NAME:-rothiss_minecraft}_backup
         volumes:
             - ${DATA_LOCATION:-./data}:/data:ro
             - ${BACKUP_LOCATION:-./backups}:/backups
@@ -176,7 +174,6 @@ services:
     monitor:
         image: itzg/mc-monitor
         container_name: ${SERVER_NAME:-rothiss_minecraft}_monitor
-        # hostname: ${SERVER_NAME:-rothiss_minecraft}_monitor
         networks:
             - minecraft
         restart: unless-stopped
@@ -197,7 +194,6 @@ services:
     telegraf:
         image: telegraf
         container_name: ${SERVER_NAME:-rothiss_minecraft}_telegraf
-        # hostname: ${SERVER_NAME:-rothiss_minecraft}_telegraf
         networks:
             - minecraft
         volumes:
@@ -229,7 +225,6 @@ services:
     map:
         image: nginx:latest
         container_name: ${SERVER_NAME:-rothiss_minecraft}_map
-        # hostname: ${SERVER_NAME:-rothiss_minecraft}_map
         networks:
             - minecraft
         ports:
