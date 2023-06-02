@@ -136,6 +136,10 @@ services:
             USE_NATIVE_TRANSPORT: ${SERVER_PROPERTIES_USE_NATIVE_TRANSPORT:-true}
 
             VIEW_DISTANCE: ${SERVER_PROPERTIES_VIEW_DISTANCE:-10}
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
         tty: true
         stdin_open: true
         restart: unless-stopped
@@ -160,6 +164,10 @@ services:
             - ${DATA_LOCATION:-./data}:/data:ro
             - ${BACKUP_LOCATION:-./backups}:/backups
         network_mode: "service:minecraft"
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
         depends_on:
             - minecraft
@@ -177,6 +185,10 @@ services:
             GATHER_SERVERS: minecraft
         profiles:
             - enable_monitor
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
         depends_on:
             - minecraft
@@ -205,6 +217,10 @@ services:
             HOST_MOUNT_PREFIX: /hostfs
         profiles:
             - enable_monitor
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
         depends_on:
             - monitor
@@ -223,6 +239,10 @@ services:
         command: ./settings/scripts/run_nginx.sh
         profiles:
             - enable_map
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
         depends_on:
             - minecraft
