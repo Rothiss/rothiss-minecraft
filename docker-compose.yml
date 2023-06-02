@@ -176,7 +176,7 @@ services:
     monitor:
         image: itzg/mc-monitor
         container_name: ${SERVER_NAME:-rothiss_minecraft}_monitor
-        hostname: ${SERVER_NAME:-rothiss_minecraft}_backup
+        hostname: ${SERVER_NAME:-rothiss_minecraft}_monitor
         networks:
             - minecraft
         restart: unless-stopped
