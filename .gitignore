@@ -1,6 +1,27 @@
-# Logs #
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
 ######################
 *.log
+*.sqlite
 
 # OS generated files #
 ######################
@@ -13,6 +34,11 @@ ehthumbs.db
 Thumbs.db
 *.swp
 
+# GULP generated files #
+########################
+*.js.map
+*.css.map
+
 # IDE files #
 #############
 nbproject/
@@ -23,8 +49,39 @@ nbproject/
 .settings
 *.sublime-project
 *.sublime-workspace
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+.phpunit.result.cache
 
-# Configuration files #
+# Dependencies #
+################
+/bower_components/
+/node_modules/
+/vendor/
+npm-debug.log
+yarn-error.log
+
+# Config files #
+################
+.env
+.env.encrypted
+
+# Laravel folders and files #
+#############################
+/public/build
+/public/css
+/public/favicon
+/public/fonts
+/public/hot
+/public/images
+/public/js
+/public/mix-manifest.json
+/public/storage
+/public/svg
+/storage/debugbar
+
+# Project folders and files #
 #############################
 /backups
 /data
@@ -35,4 +92,3 @@ nbproject/
 /settings/minecraft/icon.png
 /settings/minecraft/ops.json
 /settings/minecraft/whitelist.json
-.env
