@@ -84,6 +84,7 @@ yarn-error.log
 # Project folders and files #
 #############################
 /backups
+/config
 /data
 /datapacks
 /mods
