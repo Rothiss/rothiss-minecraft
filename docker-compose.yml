@@ -8,14 +8,13 @@ services:
             - minecraft
         ports:
             - ${SERVER_PORT:-25565}:25565
-            - ${GEYSER_PORT:-19132}:19132/tcp
-            - ${GEYSER_PORT:-19132}:19132/udp
+            - ${GEYSER_PORT:-19132}:19132
             - ${RCON_PORT:-25575}:25575
         volumes:
             - ${DATA_LOCATION:-./data}:/data
             - ${SETTINGS_LOCATION:-./settings/minecraft}:/settings
-            - ${PLUGINS_LOCATION:-./plugins}:/plugins
             - ${CONFIG_LOCATION:-./config}:/config
+            - ${PLUGINS_LOCATION:-./plugins}:/plugins
             - ${MODS_LOCATION:-./mods}:/mods
             - ${MODPACKS_LOCATION:-./modpacks}:/modpacks
             - ${DATAPACKS_LOCATION:-./datapacks}:/datapacks
@@ -53,13 +52,13 @@ services:
             WHITELIST_FILE: ${WHITELIST_LOCATION:-}
             OPS_FILE: ${OPS_LOCATION:-}
 
-            REMOVE_OLD_MODS: ${MODPACK_REMOVE_OLD_MODS:-"true"}
+            REMOVE_OLD_MODS: ${REMOVE_OLD_MODS:-"true"}
             REMOVE_OLD_MODS_DEPTH: 1
             REMOVE_OLD_MODS_INCLUDE: "*.jar"
 
             DATAPACKS: ${DATAPACK_FILES:-}
 
-            REMOVE_OLD_DATAPACKS: "true"
+            REMOVE_OLD_DATAPACKS: ${REMOVE_OLD_DATAPACKS:-"true"}
             REMOVE_OLD_DATAPACKS_DEPTH: 1
             REMOVE_OLD_DATAPACKS_INCLUDE: "*.zip"
 
@@ -82,6 +81,7 @@ services:
             ENABLE_COMMAND_BLOCK: ${SERVER_PROPERTIES_ENABLE_COMMAND_BLOCK:-false}
             ENABLE_JMX: ${SERVER_PROPERTIES_ENABLE_JMX_MONITORING:-false}
             JMX_HOST: ${SERVER_PROPERTIES_JMX_MONITORING_HOST:-}
+
             ENABLE_QUERY: ${SERVER_PROPERTIES_ENABLE_QUERY:-false}
             ENABLE_STATUS: ${SERVER_PROPERTIES_ENABLE_STATUS:-true}
             ENABLE_WHITELIST: ${SERVER_PROPERTIES_WHITELIST:-true}
