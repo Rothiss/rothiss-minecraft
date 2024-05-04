@@ -6,7 +6,7 @@ services:
             - minecraft
         ports:
             - ${SERVER_PORT:-25565}:25565
-            - ${GEYSER_PORT:-19133}:19133
+            - ${GEYSER_PORT:-19133}:19133/udp
             - ${RCON_PORT:-25575}:25575
         volumes:
             - ${DATA_LOCATION:-./data}:/data
