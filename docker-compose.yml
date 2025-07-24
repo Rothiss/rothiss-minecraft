@@ -40,9 +40,14 @@ services:
             JVM_XX_OPTS: ${JVM_XX_OPTS:-}
             JVM_DD_OPTS: ${JVM_DD_OPTS:-}
 
+            USE_AIKAR_FLAGS: ${USE_AIKAR_FLAGS:-false}
+            USE_MEOWICE_FLAGS: ${USE_MEOWICE_FLAGS:-false}
+
+            SYNC_SKIP_NEWER_IN_DESTINATION: ${SYNC_SKIP_NEWER_IN_DESTINATION:-false}
+
             ENABLE_RCON: ${RCON_ENABLED:-true}
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
-            RCON_PORT: 25575
+            RCON_PORT: ${RCON_PORT:-25575}
 
             OVERRIDE_ICON: ${ICON_OVERWRITE:-false}
             ICON: ${ICON_LOCATION:-}
@@ -178,6 +183,72 @@ services:
             RCON_HOST: ${SERVER_NAME:-rothiss_minecraft}
             RCON_PORT: 25575
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
+
+    proxy:
+        image: itzg/mc-proxy
+        container_name: ${SERVER_NAME:-rothiss_minecraft}_proxy
+        ports:
+            - ${PROXY_SERVER_PORT:-25565}:25577
+            - ${PROXY_RCON_PORT:-25585}:25575
+        volumes:
+            - ${PROXY_SERVER_LOCATION:-./proxy/server}:/server
+            - ${PROXY_SETTINGS_LOCATION:-./proxy/plugins}:/plugins
+            - ${PROXY_CONFIG_LOCATION:-./proxy/config}:/config
+        networks:
+            - minecraft
+        restart: unless-stopped
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
+        depends_on:
+            - minecraft
+        profiles:
+            - enable_proxy
+        environment:
+            TYPE: ${PROXY_TYPE:-VELOCITY}
+            DEBUG: "false"
+
+            ENABLE_RCON: ${PROXY_RCON_ENABLED:-true}
+            RCON_PASSWORD: ${PROXY_RCON_PASSWORD:-password}
+            RCON_PORT: ${PROXY_RCON_PORT:-25585}
+
+            MEMORY: ${PROXY_MEMORY:-512m}
+            INIT_MEMORY: ${PROXY_INIT_MEMORY:-512m}
+            MAX_MEMORY: ${PROXY_MAX_MEMORY:-512m}
+
+            JVM_OPTS: ${PROXY_JVM_OPTS:-}
+            JVM_XX_OPTS: ${PROXY_JVM_XX_OPTS:-}
+            JVM_DD_OPTS: ${PROXY_JVM_DD_OPTS:-}
+
+            ICON: ${PROXY_ICON_LOCATION:-}
+            OVERRIDE_ICON: ${PROXY_ICON_OVERWRITE:-false}
+
+            NETWORKADDRESS_CACHE_TTL: ${PROXY_NETWORKADDRESS_CACHE_TTL:-60}
+
+            PLUGINS: ${PROXY_PLUGINS:-}
+            PLUGINS_FILE: ${PROXY_PLUGINS_FILE:-}
+
+            SPIGET_PLUGINS: ${PROXY_SPIGET_PLUGINS:-}
+
+            MODRINTH_PROJECTS: ${PROXY_MODRINTH_PROJECTS:-}
+
+            BUNGEE_JOB_ID: ${PROXY_BUNGEE_JOB_ID:-}
+            BUNGEE_JAR_REVISION: ${PROXY_BUNGEE_JAR_REVISION:-}
+            BUNGEE_BASE_URL: ${PROXY_BUNGEE_BASE_URL:-}
+            BUNGEE_JAR_URL: ${PROXY_BUNGEE_JAR_URL:-}
+            BUNGEE_JAR_FILE: ${PROXY_BUNGEE_JAR_FILE:-}
+
+            WATERFALL_VERSION: ${PROXY_WATERFALL_VERSION:-}
+            WATERFALL_BUILD_ID: ${PROXY_WATERFALL_BUILD_ID:-}
+
+            VELOCITY_VERSION: ${PROXY_VELOCITY_VERSION:-}
+            VELOCITY_BUILD_ID: ${PROXY_VELOCITY_BUILD_ID:-}
+
+            HEALTH_HOST: ${PROXY_HEALTH_HOST:-}
+            HEALTH_USE_PROXY: ${PROXY_HEALTH_USE_PROXY:-}
+
+            ENABLE_JMX: ${PROXY_ENABLE_JMX:-}
 
     monitor:
         image: itzg/mc-monitor
