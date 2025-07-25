@@ -24,6 +24,8 @@ services:
         tty: true
         stdin_open: true
         environment:
+            # DEBUG: "true"
+
             EULA: "true"
 
             SKIP_SUDO: ${SKIP_SUDO:-false}
@@ -40,10 +42,10 @@ services:
             JVM_XX_OPTS: ${JVM_XX_OPTS:-}
             JVM_DD_OPTS: ${JVM_DD_OPTS:-}
 
-            USE_AIKAR_FLAGS: ${USE_AIKAR_FLAGS:-false}
-            USE_MEOWICE_FLAGS: ${USE_MEOWICE_FLAGS:-false}
+            USE_AIKAR_FLAGS: ${USE_AIKAR_FLAGS:-}
+            USE_MEOWICE_FLAGS: ${USE_MEOWICE_FLAGS:-}
 
-            SYNC_SKIP_NEWER_IN_DESTINATION: ${SYNC_SKIP_NEWER_IN_DESTINATION:-false}
+            SYNC_SKIP_NEWER_IN_DESTINATION: ${SYNC_SKIP_NEWER_IN_DESTINATION:-}
 
             ENABLE_RCON: ${RCON_ENABLED:-true}
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
@@ -206,8 +208,9 @@ services:
         profiles:
             - enable_proxy
         environment:
+            # DEBUG: "true"
+
             TYPE: ${PROXY_TYPE:-VELOCITY}
-            DEBUG: "false"
 
             ENABLE_RCON: ${PROXY_RCON_ENABLED:-true}
             RCON_PASSWORD: ${PROXY_RCON_PASSWORD:-password}
