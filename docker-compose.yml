@@ -330,4 +330,5 @@ services:
 
 networks:
     minecraft:
+        external: ${NETWORK_EXTERNAL:-false}
         name: ${NETWORK_NAME:-rothiss_minecraft}
