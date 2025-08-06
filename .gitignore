@@ -91,6 +91,6 @@ yarn-error.log
 /modpacks
 /plugins
 /proxy
-/settings/minecraft/icon.png
-/settings/minecraft/ops.json
-/settings/minecraft/whitelist.json
+server-icon.png
+ops.json
+whitelist.json

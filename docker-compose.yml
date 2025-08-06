@@ -183,11 +183,11 @@ services:
             PRUNE_BACKUPS_DAYS: ${BACKUP_PRUNE:-7}
 
             RCON_HOST: ${SERVER_NAME:-rothiss_minecraft}
-            RCON_PORT: 25575
+            RCON_PORT: ${RCON_PORT:-25575}
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
 
     proxy:
-        image: itzg/mc-proxy
+        image: itzg/mc-proxy:latest
         container_name: ${SERVER_NAME:-rothiss_minecraft}_proxy
         ports:
             - ${PROXY_SERVER_PORT:-25565}:25577
@@ -254,7 +254,7 @@ services:
             ENABLE_JMX: ${PROXY_ENABLE_JMX:-}
 
     monitor:
-        image: itzg/mc-monitor
+        image: itzg/mc-monitor:latest
         container_name: ${SERVER_NAME:-rothiss_minecraft}_monitor
         networks:
             - minecraft
@@ -274,7 +274,7 @@ services:
             GATHER_SERVERS: ${MONITOR_GATHER_SERVERS:-minecraft}
 
     telegraf:
-        image: telegraf
+        image: telegraf:latest
         container_name: ${SERVER_NAME:-rothiss_minecraft}_telegraf
         networks:
             - minecraft
@@ -282,7 +282,7 @@ services:
             - ${TELEGRAF_PORT:-8094}:8094
         volumes:
             - ./settings/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-            - /var/run/docker.sock:/var/run/docker.sock
+            - /var/run/docker.sock:/var/run/docker.sock:ro
             - /var/lib/docker/:/var/lib/docker:ro
             - /:/hostfs:ro
         restart: unless-stopped
