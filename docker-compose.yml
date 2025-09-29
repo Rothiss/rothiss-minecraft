@@ -1,7 +1,10 @@
+name: ${PROJECT_NAME:-minecraft}
+
 services:
     minecraft:
         image: itzg/minecraft-server${JAVA_VERSION:-}
-        container_name: ${SERVER_NAME:-rothiss_minecraft}
+        container_name: ${CONTAINER_NAME:-minecraft}
+        hostname: ${HOST_NAME:-minecraft}
         networks:
             - minecraft
         ports:
@@ -19,8 +22,8 @@ services:
         restart: unless-stopped
         logging:
             options:
-                max-size: "10m"
-                max-file: "3"
+                max-size: 10m
+                max-file: 3
         tty: true
         stdin_open: true
         environment:
@@ -160,35 +163,37 @@ services:
 
     backup:
         image: itzg/mc-backup:latest
-        container_name: ${SERVER_NAME:-rothiss_minecraft}_backup
+        container_name: ${CONTAINER_NAME:-minecraft}_backup
+        hostname: ${HOST_NAME:-minecraft}_backup
         volumes:
             - ${DATA_LOCATION:-./data}:/data:ro
             - ${BACKUP_LOCATION:-./backups}:/backups
         restart: unless-stopped
         logging:
             options:
-                max-size: "10m"
-                max-file: "3"
+                max-size: 10m
+                max-file: 3
         network_mode: "service:minecraft"
         depends_on:
             - minecraft
         environment:
             INITIAL_DELAY: ${BACKUP_DELAY:-3m}
 
-            BACKUP_NAME: ${SERVER_NAME:-rothiss_minecraft}
+            BACKUP_NAME: ${SERVER_NAME:-minecraft}
             BACKUP_INTERVAL: ${BACKUP_INTERVAL:-2h}
 
             EXCLUDES: ${BACKUP_EXCLUDE:-*.jar,cache,logs}
 
             PRUNE_BACKUPS_DAYS: ${BACKUP_PRUNE:-7}
 
-            RCON_HOST: ${SERVER_NAME:-rothiss_minecraft}
+            RCON_HOST: ${SERVER_NAME:-minecraft}
             RCON_PORT: ${RCON_PORT:-25575}
             RCON_PASSWORD: ${RCON_PASSWORD:-password}
 
     proxy:
         image: itzg/mc-proxy:latest
-        container_name: ${SERVER_NAME:-rothiss_minecraft}_proxy
+        container_name: ${CONTAINER_NAME:-minecraft}_proxy
+        hostname: ${HOST_NAME:-minecraft}_proxy
         ports:
             - ${PROXY_SERVER_PORT:-25565}:25577
             - ${PROXY_RCON_PORT:-25585}:25575
@@ -201,12 +206,12 @@ services:
         restart: unless-stopped
         logging:
             options:
-                max-size: "10m"
-                max-file: "3"
+                max-size: 10m
+                max-file: 3
         depends_on:
             - minecraft
         profiles:
-            - enable_proxy
+            - proxy
         environment:
             # DEBUG: "true"
 
@@ -255,19 +260,20 @@ services:
 
     monitor:
         image: itzg/mc-monitor:latest
-        container_name: ${SERVER_NAME:-rothiss_minecraft}_monitor
+        container_name: ${CONTAINER_NAME:-minecraft}_monitor
+        hostname: ${HOST_NAME:-minecraft}_monitor
         networks:
             - minecraft
         restart: unless-stopped
         logging:
             options:
-                max-size: "10m"
-                max-file: "3"
+                max-size: 10m
+                max-file: 3
         command: gather-for-telegraf
         depends_on:
             - minecraft
         profiles:
-            - enable_monitor
+            - monitor
         environment:
             GATHER_INTERVAL: 5s
             GATHER_TELEGRAF_ADDRESS: telegraf:8094
@@ -275,7 +281,8 @@ services:
 
     telegraf:
         image: telegraf:latest
-        container_name: ${SERVER_NAME:-rothiss_minecraft}_telegraf
+        container_name: ${CONTAINER_NAME:-minecraft}_telegraf
+        hostname: ${HOST_NAME:-minecraft}_telegraf
         networks:
             - minecraft
         ports:
@@ -288,12 +295,12 @@ services:
         restart: unless-stopped
         logging:
             options:
-                max-size: "10m"
-                max-file: "3"
+                max-size: 10m
+                max-file: 3
         depends_on:
             - monitor
         profiles:
-            - enable_monitor
+            - monitor
         environment:
             INFLUXDB_ORG: ${INFLUXDB_ORG}
             INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
@@ -308,7 +315,8 @@ services:
 
     map:
         image: nginx:latest
-        container_name: ${SERVER_NAME:-rothiss_minecraft}_map
+        container_name: ${CONTAINER_NAME:-minecraft}_map
+        hostname: ${HOST_NAME:-minecraft}_map
         networks:
             - minecraft
         ports:
@@ -318,17 +326,16 @@ services:
         restart: unless-stopped
         logging:
             options:
-                max-size: "10m"
-                max-file: "3"
+                max-size: 10m
+                max-file: 3
         command: ./settings/scripts/run_nginx.sh
         depends_on:
             - minecraft
         profiles:
-            - enable_map
+            - map
         environment:
-            SERVER_NAME: ${SERVER_NAME:-rothiss_minecraft}
+            SERVER_NAME: ${HOST_NAME:-minecraft}
 
 networks:
     minecraft:
-        external: ${NETWORK_EXTERNAL:-false}
-        name: ${NETWORK_NAME:-rothiss_minecraft}
+        name: ${NETWORK_NAME:-minecraft}
