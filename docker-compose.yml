@@ -164,7 +164,6 @@ services:
     backup:
         image: itzg/mc-backup:latest
         container_name: ${CONTAINER_NAME:-minecraft}_backup
-        hostname: ${HOST_NAME:-minecraft}_backup
         volumes:
             - ${DATA_LOCATION:-./data}:/data:ro
             - ${BACKUP_LOCATION:-./backups}:/backups
