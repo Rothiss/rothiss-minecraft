@@ -20,10 +20,6 @@ services:
             - ${MODPACKS_LOCATION:-./modpacks}:/modpacks
             - ${DATAPACKS_LOCATION:-./datapacks}:/datapacks
         restart: unless-stopped
-        logging:
-            options:
-                max-size: 10m
-                max-file: 3
         tty: true
         stdin_open: true
         environment:
@@ -168,10 +164,6 @@ services:
             - ${DATA_LOCATION:-./data}:/data:ro
             - ${BACKUP_LOCATION:-./backups}:/backups
         restart: unless-stopped
-        logging:
-            options:
-                max-size: 10m
-                max-file: 3
         network_mode: "service:minecraft"
         depends_on:
             - minecraft
@@ -203,10 +195,6 @@ services:
         networks:
             - minecraft
         restart: unless-stopped
-        logging:
-            options:
-                max-size: 10m
-                max-file: 3
         depends_on:
             - minecraft
         profiles:
@@ -264,10 +252,6 @@ services:
         networks:
             - minecraft
         restart: unless-stopped
-        logging:
-            options:
-                max-size: 10m
-                max-file: 3
         command: gather-for-telegraf
         depends_on:
             - minecraft
@@ -292,10 +276,6 @@ services:
             - /var/lib/docker/:/var/lib/docker:ro
             - /:/hostfs:ro
         restart: unless-stopped
-        logging:
-            options:
-                max-size: 10m
-                max-file: 3
         depends_on:
             - monitor
         profiles:
@@ -323,10 +303,6 @@ services:
         volumes:
             - ./settings/nginx:/settings
         restart: unless-stopped
-        logging:
-            options:
-                max-size: 10m
-                max-file: 3
         command: ./settings/scripts/run_nginx.sh
         depends_on:
             - minecraft
